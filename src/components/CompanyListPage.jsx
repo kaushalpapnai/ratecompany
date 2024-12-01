@@ -42,7 +42,7 @@ const CompanyListPage = () => {
           placeholder="Search companies..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="p-3 border rounded-md w-full max-w-sm"
+          className="p-3 border rounded-md w-full max-w-sm text-gray-800"
         />
 
         {/* Industry Filter */}
@@ -62,7 +62,7 @@ const CompanyListPage = () => {
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          className="p-3  rounded-md text-slate-700"
+          className="p-3 rounded-md text-slate-700"
         >
           <option value="name">Sort by Name</option>
           <option value="rating">Sort by Rating</option>
