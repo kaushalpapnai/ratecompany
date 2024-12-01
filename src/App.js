@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar";
 import SubmitReviewPage from "./components/SubmitReviewPage";
 import UserProfilePage from "./components/UserProfilePage";
 import ContactUs from "./ContactUs";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 function App() {
   
@@ -44,22 +45,60 @@ function App() {
     { id: 1, userName: 'Alice Johnson', companyName: 'TechCorp', rating: 4 },
     { id: 2, userName: 'Bob Smith', companyName: 'Webify Solutions', rating: 5 },
   ];
+
+
+
+  const router = createBrowserRouter([
+    {
+      path:"/",
+      element: <HomePage/>
+    },
+    {
+      path:"/login",
+      element: <LoginForm/>
+    },
+    {
+      path:"/about",
+      element: <AboutUs/>
+    },
+    {
+      path:"/companylist",
+      element: <CompanyListPage/>
+    },
+    {
+      path:"/companydetails",
+      element: <CompanyDetailsPage/>
+    },
+    {
+      path:"/submitreview",
+      element: <SubmitReviewPage/>
+    },
+    {
+      path:"/userprofile",
+      element: <UserProfilePage/>
+    },
+    {
+      path:"/contactus",
+      element: <ContactUs/>
+    },
+  ])
   
   
 
   return (
-    <div className="text-white h-screen">
-     <Navbar/>
-     {/* <LoginForm/> */}
-     {/* <HomePage/> */}
-     {/* <CompanyListPage/> */}
-     {/* <CompanyDetailsPage/> */}
-     {/* <SubmitReviewPage companyName={"techCorp"} /> */}
-     <UserProfilePage user={user}/>
-     <AdminDashboard stats={stats} companies={companies} reviews={reviews}/>
-     <AboutUs/>
-     <ContactUs/>
-    </div>
+    <RouterProvider router={router}>
+      <Navbar/>
+      <LoginForm/>
+      <HomePage/>
+      <CompanyListPage/>
+      <CompanyDetailsPage/>
+      <SubmitReviewPage companyName={"techCorp"} />
+      <UserProfilePage user={user}/>
+      {/* <AdminDashboard stats={stats} companies={companies} reviews={reviews}/> */}
+      <AboutUs/>
+      <ContactUs/>
+    </RouterProvider>
+
   );
 }
 
