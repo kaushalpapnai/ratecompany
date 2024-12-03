@@ -9,27 +9,11 @@ import SubmitReviewPage from "./components/SubmitReviewPage";
 import UserProfilePage from "./components/UserProfilePage";
 import ContactUs from "./ContactUs";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import {getDatabase , ref , set} from "firebase/database"
-import { app  } from "./firebase";
+import { Provider } from 'react-redux';
+import store from "./store/store";
 
-
-const db = getDatabase(app)
 
 function App() {
-
-  const putData = () => {
-    set(ref(db, "user/kaushal"), {
-      id: 1,
-      name: "kaushal",
-      age: 21,
-    })
-      .then(() => {
-        console.log("Data saved successfully.");
-      })
-      .catch((error) => {
-        console.error("Error saving data:", error);
-      });
-  };
 
   
   const user = {
@@ -112,6 +96,7 @@ function App() {
   
 
   return (
+   <Provider store={store}>
     <RouterProvider router={router}>
       <Navbar/>
       {/* <LoginForm/>
@@ -124,6 +109,9 @@ function App() {
       <AboutUs/>
       <ContactUs/> */}
     </RouterProvider>
+
+
+   </Provider>
 
   );
 }
