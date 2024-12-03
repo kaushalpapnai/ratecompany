@@ -9,8 +9,28 @@ import SubmitReviewPage from "./components/SubmitReviewPage";
 import UserProfilePage from "./components/UserProfilePage";
 import ContactUs from "./ContactUs";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {getDatabase , ref , set} from "firebase/database"
+import { app  } from "./firebase";
+
+
+const db = getDatabase(app)
 
 function App() {
+
+  const putData = () => {
+    set(ref(db, "user/kaushal"), {
+      id: 1,
+      name: "kaushal",
+      age: 21,
+    })
+      .then(() => {
+        console.log("Data saved successfully.");
+      })
+      .catch((error) => {
+        console.error("Error saving data:", error);
+      });
+  };
+
   
   const user = {
     name: 'Alice Johnson',
@@ -30,56 +50,62 @@ function App() {
   };
 
 
-  const stats = {
-    users: 120,
-    companies: 50,
-    reviews: 300,
-  };
+  // const stats = {
+  //   users: 120,
+  //   companies: 50,
+  //   reviews: 300,
+  // };
   
-  const companies = [
-    { id: 1, name: 'TechCorp', reviewCount: 150 },
-    { id: 2, name: 'Webify Solutions', reviewCount: 80 },
-  ];
+  // const companies = [
+  //   { id: 1, name: 'TechCorp', reviewCount: 150 },
+  //   { id: 2, name: 'Webify Solutions', reviewCount: 80 },
+  // ];
   
-  const reviews = [
-    { id: 1, userName: 'Alice Johnson', companyName: 'TechCorp', rating: 4 },
-    { id: 2, userName: 'Bob Smith', companyName: 'Webify Solutions', rating: 5 },
-  ];
+  // const reviews = [
+  //   { id: 1, userName: 'Alice Johnson', companyName: 'TechCorp', rating: 4 },
+  //   { id: 2, userName: 'Bob Smith', companyName: 'Webify Solutions', rating: 5 },
+  // ];
 
 
 
   const router = createBrowserRouter([
     {
-      path:"/",
-      element: <HomePage/>
-    },
-    {
-      path:"/login",
-      element: <LoginForm/>
-    },
-    {
-      path:"/about",
-      element: <AboutUs/>
-    },
-    {
-      path:"/companylist",
-      element: <CompanyListPage/>
-    },
-    {
-      path:"/companydetails",
-      element: <CompanyDetailsPage/>
-    },
-    {
-      path:"/submitreview",
-      element: <SubmitReviewPage/>
-    },
-    {
-      path:"/userprofile",
-      element: <UserProfilePage/>
-    },
-    {
-      path:"/contactus",
-      element: <ContactUs/>
+       path:"/",
+       element:<Navbar/>,
+       children: [
+        {
+          path:"/",
+          element: <HomePage/>
+        },
+        {
+          path:"/login",
+          element: <LoginForm/>
+        },
+        {
+          path:"/about",
+          element: <AboutUs/>
+        },
+        {
+          path:"/companylist",
+          element: <CompanyListPage/>
+        },
+        {
+          path:"/details",
+          element: <CompanyDetailsPage/>
+        },
+        {
+          path:"/submitreview",
+          element: <SubmitReviewPage/>
+        },
+        {
+          path:"/profile",
+          element: <UserProfilePage user={user}/>
+        },
+        {
+          path:"/contact",
+          element: <ContactUs/>
+        },
+       ]
     },
   ])
   
@@ -88,15 +114,15 @@ function App() {
   return (
     <RouterProvider router={router}>
       <Navbar/>
-      <LoginForm/>
-      <HomePage/>
+      {/* <LoginForm/>
+      <HomePage/>ß
       <CompanyListPage/>
       <CompanyDetailsPage/>
       <SubmitReviewPage companyName={"techCorp"} />
       <UserProfilePage user={user}/>
-      {/* <AdminDashboard stats={stats} companies={companies} reviews={reviews}/> */}
+      <AdminDashboard stats={stats} companies={companies} reviews={reviews}/>
       <AboutUs/>
-      <ContactUs/>
+      <ContactUs/> */}
     </RouterProvider>
 
   );
