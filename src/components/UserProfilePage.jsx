@@ -1,6 +1,11 @@
 import React from 'react';
+import { useSelector } from "react-redux";
 
-const UserProfilePage = ({ user }) => {
+const UserProfilePage = () => {
+
+  const user = useSelector((store)=>store?.user?.user)
+  
+
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex justify-center">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
@@ -13,16 +18,16 @@ const UserProfilePage = ({ user }) => {
           <h3 className="text-lg font-semibold text-gray-700">Personal Details</h3>
           <div className="mt-4 space-y-2">
             <p>
-              <strong>Name:</strong> {user.name || 'John Doe'}
+              <strong>Name:</strong> { user ? user.displayName : "undefined"}
             </p>
             <p>
-              <strong>Email:</strong> {user.email || 'johndoe@example.com'}
+              <strong>Email:</strong> { user ? user.email : "undefined"}
             </p>
           </div>
         </div>
 
         {/* User Reviews Section */}
-        <div className="mb-6">
+        {/* <div className="mb-6">
           <h3 className="text-lg font-semibold text-gray-700">Your Reviews</h3>
           {user.reviews && user.reviews.length > 0 ? (
             <ul className="mt-4 space-y-4">
@@ -40,7 +45,7 @@ const UserProfilePage = ({ user }) => {
           ) : (
             <p className="mt-4 text-gray-600">You haven't submitted any reviews yet.</p>
           )}
-        </div>
+        </div> */}
 
         {/* Edit Profile Button */}
         <div className="flex justify-center">

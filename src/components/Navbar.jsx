@@ -1,9 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, Outlet } from "react-router-dom";
+import { auth } from "../firebase";
+import { addUser, removeUser } from "../store/slices/userSlice";
 
 const Navbar = () => {
   // State to toggle the mobile menu
   const [isOpen, setIsOpen] = useState(false);
+
+  const dispatch = useDispatch()
+  
+  useEffect(() => {
+    // Firebase Auth Listener
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in, sync user data to Redux
+        const { uid, email, displayName } = user;
+        dispatch(addUser({ uid, email, displayName }));
+      } else {
+        // No user is signed in, clear Redux store
+        dispatch(removeUser());
+      }
+    });
+
+    // Cleanup the listener on component unmount
+    return () => unsubscribe();
+  }, [dispatch]);
 
   return (
     <>
@@ -18,8 +40,8 @@ const Navbar = () => {
           <ul className="hidden md:flex space-x-6">
           <Link to={"/"}><li className="hover:text-blue-400 cursor-pointer">Home</li></Link>
             <Link to={"/about"}><li className="hover:text-blue-400 cursor-pointer">About</li></Link>
-            <Link to={"/services"}><li className="hover:text-blue-400 cursor-pointer">Services</li></Link>
             <Link to={"/contact"}><li className="hover:text-blue-400 cursor-pointer">Contact</li></Link>
+            <Link to={"/profile"}><li className="hover:text-blue-400 cursor-pointer">Profile</li></Link>
           </ul>
 
           {/* Hamburger Menu for Mobile */}
@@ -37,7 +59,6 @@ const Navbar = () => {
             <ul className="flex flex-col space-y-2 p-4">
             <Link to={"/"}><li className="hover:text-blue-400 cursor-pointer">Home</li></Link>
             <Link to={"/about"}><li className="hover:text-blue-400 cursor-pointer">About</li></Link>
-            <Link to={"/services"}><li className="hover:text-blue-400 cursor-pointer">Services</li></Link>
             <Link to={"/contact"}><li className="hover:text-blue-400 cursor-pointer">Contact</li></Link>
             <Link to={"/profile"}><li className="hover:text-blue-400 cursor-pointer">Profile</li></Link>
             </ul>

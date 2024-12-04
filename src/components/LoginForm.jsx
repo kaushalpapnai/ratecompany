@@ -15,21 +15,27 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [isLogin, setIsLogin] = useState(true);
+  const [loginError,setLoginError] = useState(" ")
+  const [signUpError,setSignUpError] = useState(" ")
 
   const dispatch = useDispatch()
   const auth = getAuth(app);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic here (e.g., API call)
-    console.log("Logged in with", email, password);
   };
 
   const handleIsLogin = () => {
+    setLoginError(" ")
+    setSignUpError(" ")
     setIsLogin(!isLogin);
   };
 
   const createUser = () => {
+    if(name === ""){
+        setSignUpError("enter the name")
+        return
+    }
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed up
@@ -41,19 +47,15 @@ const LoginForm = () => {
           .then(() => {
             const {uid,displayName,email} = user;
             dispatch(addUser({ uid, email, displayName }))
-            alert("User created successfully with name: " + name);
-            console.log("User created:", user);
           })
           .catch((error) => {
             console.error("Error updating profile:", error.message);
           });
-        console.log(user);
       })
       .catch((error) => {
         const errorCode = error.code;
-        console.log(errorCode);
         const errorMessage = error.message;
-        console.log(errorMessage);
+        setSignUpError(errorCode)
         // ..
       });
   };
@@ -63,14 +65,14 @@ const LoginForm = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log("user logged in successfully",user)
+        const {uid,displayName,email} = user
+        dispatch(addUser({uid,displayName,email}))
         // ...
       })
       .catch((error) => {
         const errorCode = error.code;
-        console.log(errorCode)
         const errorMessage = error.message;
-        console.log(errorMessage)
+        setLoginError(errorCode)
       });
   };
 
@@ -114,7 +116,7 @@ const LoginForm = () => {
           </div>
 
           {/* Password Input */}
-          <div className="mb-6">
+          <div className="mb-4">
             <label htmlFor="password" className="block text-gray-600">
               Password
             </label>
@@ -127,7 +129,8 @@ const LoginForm = () => {
               placeholder="Enter your password"
             />
           </div>
-
+          {loginError ? <p className="text-red-500 mb-2" >{loginError}</p> : null}
+          {signUpError ? <p className="text-red-500 mb-2" >{signUpError}</p> : null}
           {/* Submit Button */}
 
           {isLogin ? (
