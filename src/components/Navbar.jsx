@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import { addUser, removeUser } from "../store/slices/userSlice";
 
 const Navbar = () => {
   // State to toggle the mobile menu
   const [isOpen, setIsOpen] = useState(false);
-
+ 
+  const location = useLocation()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   
   useEffect(() => {
     // Firebase Auth Listener
     const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user && location.pathname === "/login") {
+        // If user is signed in and tries to access /login, redirect to home
+        navigate("/");
+      }
       if (user) {
         // User is signed in, sync user data to Redux
         const { uid, email, displayName } = user;
@@ -25,7 +31,7 @@ const Navbar = () => {
 
     // Cleanup the listener on component unmount
     return () => unsubscribe();
-  }, [dispatch]);
+  }, []);
 
   return (
     <>
