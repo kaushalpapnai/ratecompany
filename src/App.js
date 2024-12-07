@@ -11,6 +11,7 @@ import ContactUs from "./ContactUs";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from 'react-redux';
 import store from "./store/store";
+import AddNewCompany from "./components/AddNewCompany";
 
 
 
@@ -75,7 +76,7 @@ function App() {
           element: <CompanyListPage/>
         },
         {
-          path:"/details",
+          path:"/details/:id",
           element: <CompanyDetailsPage/>
         },
         {
@@ -89,6 +90,10 @@ function App() {
         {
           path:"/contact",
           element: <ContactUs/>
+        },
+        {
+          path:"/addcompany",
+          element: <AddNewCompany/>
         },
        ]
     },
